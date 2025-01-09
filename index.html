@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Cards</title>
+  <style>
+    *{
+      padding: 0%;
+      margin: 0%;
+    
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-block: 1%;
+      height: 100vh;
+      background-color: #727D73;
+      margin: 0;
+   width: 100%;
+      
+    }
+    #profile-cards-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+flex-wrap: wrap;      
+      gap: 20px;
+      height: 100vh;
+      width: 100%;
+      /* padding-inline: 5px; */
+    }
+    .profile-card {
+      background-color: white;
+      padding: 1rem;
+      width: 15em;
+      background-color: #F0F0D7;
+padding-inline: 1rem    ;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+gap: 2px;
+height: 15rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .profile-card img {
+      width: 40%;
+      height: auto;
+      border-radius: 50%;
+    }
+    .profile-card h3 {
+      margin: 10px 0;
+      font-size: 1.2em;
+    }
+    .profile-card p {
+      color: #555;
+      margin: 5px 0;
+    }
+   
+    .icons a {
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 1.4em;
+      color: #333;
+    }
+    .profile-card:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+  
+  </style>
+</head>
+<body>
+
+  <div id="profile-cards-container"></div>
+
+  <script>
+    const profileCardContainer = document.getElementById('profile-cards-container');
+
+    fetch('https://randomuser.me/api/?results=8')
+      .then(response => response.json())
+      .then(data => {
+        data.results.forEach(user => {
+          const profileCard = document.createElement('div');
+          profileCard.classList.add('profile-card');
+          
+          profileCard.innerHTML = `
+            <img src="${user.picture.large}" alt="${user.name.first}">
+            <h3>${user.name.first} ${user.name.last}</h3>
+            <p>${user.location.city}, ${user.location.country}</p>
+            <p>${user.email}</p>
+            <div class="icons">
+              <a id="hp" href="mailto:${user.email}">✉️</a>
+              <a href="#">📞</a>
+            </div>
+          `;
+          
+          profileCardContainer.appendChild(profileCard);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching user data:', error);
+        profileCardContainer.innerHTML = `<p>Failed to load profiles. Please try again later.</p>`;
+      });
+  </script>
+
+</body>
+</html>
